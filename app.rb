@@ -2,6 +2,7 @@ require_relative './book'
 require_relative './person'
 require_relative './student'
 require_relative './teacher'
+require_relative './rental'
 
 class App
   attr_accessor :people_list, :books_list, :rentals_list
@@ -25,7 +26,7 @@ class App
 
   def list_books
     @books_list.each do |book|
-      puts "Book: #{book.title}            Author: #{book.author}"
+      puts "Book: #{book.title}, Author: #{book.author}"
     end
   end
 
@@ -59,11 +60,38 @@ class App
 
   def list_people
     @people_list.each do |person|
-      puts "Name: #{person.name}            age: #{person.age}"
+      puts "Name: #{person.name}, Age: #{person.age}, ID: #{person.id}"
+    end
+  end
+
+  def create_rental
+    puts '   Select a book with its number'
+    @books_list.each_with_index do |book, index|
+      puts "[#{index}] '#{book.title}' '#{book.author}'"
+    end
+    book = gets.chomp.to_i
+
+    puts '   Select a person with their number'
+    @people_list.each_with_index do |person, index|
+      puts "[#{index}] '#{person.name}' '#{person.id}' '#{person.age}'"
+    end
+    person = gets.chomp.to_i
+    print '   Enter Rental Date: '
+
+    date = gets.chomp
+
+    rental = Rental.new(date, @books_list[book], @people_list[person])
+    @rentals_list.push(rental)
+  end
+
+  def list_rentals
+    list_people
+    print '   Enter Person ID:'
+    id = gets.chomp.to_i
+    @rentals_list.each do |rental|
+      if rental.person.id == id
+        puts "Date: #{rental.date}, '#{rental.book.title}' by #{rental.book.author}"
+      end
     end
   end
 end
-
-testing = App.new
-testing.create_person
-testing.list_people
