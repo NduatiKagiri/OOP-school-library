@@ -25,6 +25,14 @@ class App
 
     option = gets.chomp.to_i
 
+    if option == 7
+      puts '   Exiting............'
+    else
+      options(option)
+    end
+  end
+
+  def options(option)
     case option
     when 1
       list_books
@@ -38,8 +46,6 @@ class App
       create_rental
     when 6
       list_rentals
-    when 7
-      puts '  Exiting..............'
     else
       print '   Invalid Input'
       run
@@ -71,32 +77,40 @@ class App
     option = gets.chomp.to_i
     case option
     when 1
-      print '   Enter a name: '
-      name = gets.chomp
-      print '   Enter a age: '
-      age = gets.chomp.to_i
-      print '   Has parent persmision [Y/N]: '
-      permission = gets.chomp.downcase
-      parent_permission = (permission == 'y') ? true : false
-      person = Student.new(age, nil, name: name.capitalize, parent_permission: parent_permission)
-      @people_list.push(person)
-      puts "   Student Created Successifully.............."
-      run
+      create_student
     when 2
-      print '   Enter a name: '
-      name = gets.chomp.capitalize
-      print '   Enter a age: '
-      age = gets.chomp.to_i
-      print '   Enter specialization: '
-      specialization = gets.chomp.capitalize
-      teacher = Teacher.new(age, specialization, name: name)
-      @people_list.push(teacher)
-      puts "   Techer Created Successifully.............."
-      run
+      create_teacher
     else
       print '   Invalid input!'
       create_person
     end
+  end
+
+  def create_student
+    print '   Enter a name: '
+    name = gets.chomp
+    print '   Enter a age: '
+    age = gets.chomp.to_i
+    print '   Has parent persmision [Y/N]: '
+    permission = gets.chomp.downcase
+    parent_permission = permission == 'y'
+    person = Student.new(age, nil, name: name.capitalize, parent_permission: parent_permission)
+    @people_list.push(person)
+    puts '   Student Created Successifully..............'
+    run
+  end
+
+  def create_teacher
+    print '   Enter a name: '
+    name = gets.chomp.capitalize
+    print '   Enter a age: '
+    age = gets.chomp.to_i
+    print '   Enter specialization: '
+    specialization = gets.chomp.capitalize
+    teacher = Teacher.new(age, specialization, name: name)
+    @people_list.push(teacher)
+    puts '   Techer Created Successifully..............'
+    run
   end
 
   def list_people
@@ -107,13 +121,13 @@ class App
   end
 
   def create_rental
-    puts "   Select a book with its number"
+    puts '   Select a book with its number'
     @books_list.each_with_index do |book, index|
       puts "[#{index}] '#{book.title}' by #{book.author}"
     end
     book = gets.chomp.to_i
 
-    puts "   Select a person with their number"
+    puts '   Select a person with their number'
     @people_list.each_with_index do |person, index|
       puts "[#{index}] Name: #{person.name}, ID: #{person.id}, Age: #{person.age}"
     end
@@ -124,7 +138,7 @@ class App
 
     rental = Rental.new(date, @books_list[book], @people_list[person])
     @rentals_list.push(rental)
-    puts "   Rental Created Successifully............"
+    puts '   Rental Created Successifully............'
     run
   end
 
@@ -132,9 +146,7 @@ class App
     print '   Enter Person ID:'
     id = gets.chomp.to_i
     @rentals_list.each do |rental|
-      if rental.person.id == id
-        puts "Date: #{rental.date}, '#{rental.book.title}' by #{rental.book.author}"
-      end
+      puts "Date: #{rental.date}, '#{rental.book.title}' by #{rental.book.author}" if rental.person.id == id
     end
     run
   end
