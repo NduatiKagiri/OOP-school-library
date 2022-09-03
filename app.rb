@@ -13,63 +13,21 @@ class App
     @rentals_list = []
   end
 
-  def run
-    puts 'Select a number to choose an option'
-    puts '1 - List all Books'
-    puts '2 - List all People'
-    puts '3 - Create a Book'
-    puts '4 - Create a Person'
-    puts '5 - Create a Rental'
-    puts '6 - List all Rentals for a given person ID'
-    puts '7 - Exit'
-
-    option = gets.chomp.to_i
-
-    if option == 7
-      puts '   Exiting............'
-    else
-      options(option)
-    end
-  end
-
-  def options(option)
-    case option
-    when 1
-      list_books
-    when 2
-      list_people
-    when 3
-      create_book
-    when 4
-      create_person
-    when 5
-      create_rental
-    when 6
-      list_rentals
-    else
-      print '   Invalid Input'
-      run
-    end
-  end
-
-  def create_book
+  def create_book()
     print '   Enter Book Title: '
     title = gets.chomp
     print '   Enter Book author: '
     author = gets.chomp
-
     new_book = Book.new(title.capitalize, author.capitalize)
 
     @books_list.push(new_book)
     puts '   Book Created Successifully..........'
-    run
   end
 
   def list_books
     @books_list.each do |book|
       puts "Book: #{book.title}, Author: #{book.author}"
     end
-    run
   end
 
   def create_person
@@ -97,7 +55,6 @@ class App
     person = Student.new(age, nil, name: name.capitalize, parent_permission: parent_permission)
     @people_list.push(person)
     puts '   Student Created Successifully..............'
-    run
   end
 
   def create_teacher
@@ -110,14 +67,12 @@ class App
     teacher = Teacher.new(age, specialization, name: name)
     @people_list.push(teacher)
     puts '   Techer Created Successifully..............'
-    run
   end
 
   def list_people
     @people_list.each do |person|
       puts "Name: #{person.name}, Age: #{person.age}, ID: #{person.id}"
     end
-    run
   end
 
   def create_rental
@@ -139,7 +94,6 @@ class App
     rental = Rental.new(date, @books_list[book], @people_list[person])
     @rentals_list.push(rental)
     puts '   Rental Created Successifully............'
-    run
   end
 
   def list_rentals
@@ -148,6 +102,5 @@ class App
     @rentals_list.each do |rental|
       puts "Date: #{rental.date}, '#{rental.book.title}' by #{rental.book.author}" if rental.person.id == id
     end
-    run
   end
 end
